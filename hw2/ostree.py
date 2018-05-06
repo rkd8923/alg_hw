@@ -19,13 +19,18 @@ class Node:
       self.right = n
    def set_size(self, s):
       self.size = s
+   def get_sibling(self):
+      if self.parent.left == self:
+         return self.parent.right
+      else:
+         return self.parent.left
    def get_p2(self):
       return self.parent.parent
    def get_ps(self):
       g = self.get_p2()
       if not(g):
          return NIL
-      elif (n.parent == g.left):
+      elif (self.parent == g.left):
          return g.right
       else:
          return g.left
@@ -112,6 +117,7 @@ class OS_tree:
          rotateR(g)
       else:
          rotateL(g)
+
    def rotateL(self, n):
       c = n.right
       p = n.parent
@@ -145,6 +151,33 @@ class OS_tree:
             p.right = c
          else:
             p.left = c
+   def replace(n, c):
+      if n.parent.left == n:
+         n.parent.left = c
+      else:
+         n.parent.right = c
+      if not(c):
+         c.parent = n.parent
+         return c
+      else:
+         return c
+
+   def delete_one_child(self, n):
+      c = n.left if not(n.right) else n.right
+      is_NIL = replace(n, c)
+      if not(is_NIL) and n.color==B:
+         if c.color == R:
+            c.set_color = B
+         else:
+            delete_case1(c)
+
+   def delete_case1(self, n):
+      if n.parent != NIL:
+         delete_case2(n)
+
+   # def delete_case2(self, n):
+   #    s = n.get_sibling()
+   #    if 
 
 
 
