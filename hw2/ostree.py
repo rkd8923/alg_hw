@@ -112,6 +112,39 @@ class OS_tree:
          rotateR(g)
       else:
          rotateL(g)
+   def rotateL(self, n):
+      c = n.right
+      p = n.parent
+
+      if (c.left != NIL):
+         c.left.parent = n
+      n.right = c.left
+      n.parent = c
+      c.left = n
+      c.parent = parent
+
+      if (p != NIL):
+         if (p.left == n):
+            p.left = c
+         else:
+            p.right = c
+
+   def rotateR(self, n):
+      c = n.left
+      p = n.parent
+
+      if (c.right != NIL):
+         c.right.parent = n
+      n.left = c.right
+      n.parent = c
+      c.right = n
+      c.parent = parent
+
+      if (p != NIL):
+         if (p.right == n):
+            p.right = c
+         else:
+            p.left = c
 
 
 
