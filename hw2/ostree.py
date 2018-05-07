@@ -1,4 +1,3 @@
-NIL = False
 B = 'Black'
 R = 'Red'
 class Node:
@@ -6,9 +5,11 @@ class Node:
       self.value = n
       self.size = 1
       self.color = R
-      self.parent = NIL
-      self.left = NIL
-      self.right = NIL
+      self.parent = None
+      self.left = None
+      self.right = None
+   def set_value(self, v):
+      self.value = v
    def set_color(self, c):
       self.color = c
    def set_parent(self, p):
@@ -19,117 +20,137 @@ class Node:
       self.right = n
    def set_size(self, s):
       self.size = s
+   def set_leaf(self, N):
+      self.left = N
+      self.right = N
+   def is_NIL(self):
+      return (self.value is None)
+   def get_color(self, n):
+      if n == False:
+         return B
+      else:
+         return n.color
    def get_sibling(self):
       if self.parent.left == self:
          return self.parent.right
       else:
          return self.parent.left
    def get_p2(self):
+      if self.parent is None:
+         return None
       return self.parent.parent
    def get_ps(self):
       g = self.get_p2()
-      if not(g):
-         return NIL
+      if g is None:
+         return None
       elif (self.parent == g.left):
          return g.right
       else:
          return g.left
 
+# NIL : leaf node
+NIL = Node(None)
+NIL.set_color(B)
+
+
 class OS_tree:
    def __init__(self):
       self.root = NIL
 
+   def get_root(self):
+      return self.root
+
    def find_node(self, node, x):  # first, node is root node
-      if node == NIL:
+      if self.root.is_NIL():
          return False
       elif node.value == x:
          return node
-      elif node.value < x:
-         return self.find_node(node.left, x)
       elif node.value > x:
+         return self.find_node(node.left, x)
+      elif node.value < x:
          return self.find_node(node.right, x)
       else:
          print("Error : Find node")
    
    def find_loc(self, node, x):  # find node for insert location
       if node.value > x:
-         if not(node.left):
-            return find_loc(node.left, x)
+         if not(node.left.is_NIL()):
+            return self.find_loc(node.left, x)
          else:
             return node, "left"
       else:
-         if not(node.right):
-            return find_loc(node.right, x)
+         if not(node.right.is_NIL()):
+            return self.find_loc(node.right, x)
          else:
             return node, "right"
 
-
    def insert(self, x):
       newNode = Node(x)
-      if not(self.root):
+      newNode.set_leaf(NIL)
+      if self.root.is_NIL():
          self.root = newNode
       else:
-         p, d = find_loc(newNode)
+         p, d = self.find_loc(self.get_root(), newNode.value)
          if d == "left":
             p.left = newNode
          else:
             p.right = newNode
          newNode.parent = p
-      insert_case1(newNode)
+      self.insert_case1(newNode)
 
    def insert_case1(self, n):
-      if not(n.parent):
-         newNode.set_color(B)
+      if n.parent is None:
+         n.set_color(B)
       else:
-         insert_case2(n)
+         self.insert_case2(n)
 
    def insert_case2(self, n):
       if n.parent.color != B:
-         insert_case3(n)
+         self.insert_case3(n)
 
    def insert_case3(self, n):
-      u = n.get_ps(n)
-      if u!=NIL and u.color == R:
+      u = n.get_ps()
+      if not(u is None) and u.color == R:
          n.parent.set_color(B)
          u.set_color(B)
          g = n.get_p2()
          g.set_color(R)
-         insert_case1(g)
+         self.insert_case1(g)
       else:
-         insert_case4(n)
+         self.insert_case4(n)
 
    def insert_case4(self, n):
       g = n.get_p2()
 
       if n == n.parent.right and n.parent == g.left:
-         rotateL(n.parent)
+         self.rotateL(n.parent)
          n = n.left
-      elif n = n.parent.left and n.parent == g.right:
-         rotateR(n.parent)
+      elif n == n.parent.left and n.parent == g.right:
+         self.rotateR(n.parent)
          n = n.right
-      insert_case5(n)
+      self.insert_case5(n)
 
    def insert_case5(self, n):
       g = n.get_p2()
       n.parent.set_color(B)
       g.set_color(R)
       if n == n.parent.left:
-         rotateR(g)
+         self.rotateR(g)
       else:
-         rotateL(g)
+         self.rotateL(g)
 
    def rotateL(self, n):
       c = n.right
       p = n.parent
 
-      if (c.left != NIL):
+      if not(c.left.is_NIL()):
          c.left.parent = n
       n.right = c.left
       n.parent = c
       c.left = n
       c.parent = parent
 
-      if (p != NIL):
+      if not(p is None):
          if (p.left == n):
             p.left = c
          else:
@@ -139,46 +160,107 @@ class OS_tree:
       c = n.left
       p = n.parent
 
-      if (c.right != NIL):
+      if not(c.right.is_NIL()):
          c.right.parent = n
       n.left = c.right
       n.parent = c
       c.right = n
       c.parent = parent
 
-      if (p != NIL):
+      if not(p is None):
          if (p.right == n):
             p.right = c
          else:
             p.left = c
-   def replace(n, c):
-      if n.parent.left == n:
-         n.parent.left = c
-      else:
-         n.parent.right = c
-      if not(c):
-         c.parent = n.parent
-         return c
-      else:
-         return c
 
-   def delete_one_child(self, n):
-      c = n.left if not(n.right) else n.right
-      is_NIL = replace(n, c)
-      if not(is_NIL) and n.color==B:
-         if c.color == R:
-            c.set_color = B
-         else:
-            delete_case1(c)
 
-   def delete_case1(self, n):
-      if n.parent != NIL:
-         delete_case2(n)
+   # def replace(n, c):
+   #    # need : root node case
+   #    if n.parent.left == n:
+   #       n.parent.left = c
+   #    else:
+   #       n.parent.right = c
+   #    if not(c):
+   #       c.parent = n.parent
+   #       return c
+   #    else:
+   #       return c
 
-   # def delete_case2(self, n):
-   #    s = n.get_sibling()
-   #    if 
+   # def delete_one_child(self, n):
+   #    c = n.left if n.right.is_NIL() else n.right
+   #    is_NIL = replace(n, c)
+   #    if not(is_NIL) and n.color==B:
+   #       if c.color == R:
+   #          c.set_color = B
+   #       else:
+   #          delete_case1(c)
 
+#    def delete_case1(self, n):
+#       if n.parent != NIL:
+#          delete_case2(n)
+
+#    def delete_case2(self, n):
+#       s = n.get_sibling()
+#       if s == NIL:
+#          s_color = B
+#       else:
+#          s_color = s.color
+
+#       if s_color == R:
+#          n.parent.set_color(R)
+#          s.set_color(B)
+#          if n == n.parent.left:
+#             rotateL(n.parent)
+#          else:
+#             rotateR(n.parent)
+#       delete_case3(n)
+# ################################################
+#    def delete_case3(self, n):
+#       s = n.get_sibling()
+#       if not(s):
+#          if ((n.parent.color == B) and
+#             (s.color == B) and
+#             (s.get_color(s.left) == B) and
+#             (s.get_color(s.right) == B)):
+#             s.set_color(R)
+#             delete_case(n.parent)
+#          else:
+#             delete_case4(n)
+
+#    def delete_case4(self, n):
+#       s = n.get_sibling()
+#       if not(s):
+#          if ((n.parent.color == R) and
+#             (s.color == B) and
+#             (s.get_color(s.left) == B) and
+#             (s.get_color(s.right) == B)):
+#             s.set_color(R)
+#             n.parent.set_color(B)
+#          else:
+#             delete_case5(n)
+
+   # def delete_case5(self, n):
+   #    s = n.get_sibling(n)
+   #    if (s.get_color(s) == B):
+   #       if ((n==n.parent.left) and
+   #          (s.get_color(s.right) == B) and
+   #          (s.get_color(s.left) == R)):
+   #          s.set_color(R)
+   # def delete_case6(self, n):
+
+
+# t = OS_tree()
+# t.insert(5)
+# t.insert(1)
+# t.insert(10)
+# t.insert(3)
+# t.insert(7)
+# print(t.get_root().value)
+# print(t.get_root().left.value)
+# print(t.get_root().right.value)
+# print(t.get_root().left.right.value)
+# print(t.get_root().right.left.value)
+       
 
 
 
