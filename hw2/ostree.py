@@ -279,8 +279,8 @@ class OS_tree:
 
 
 t = OS_tree()
-# t.insert(5)
-# t.insert(1)
+t.insert(5)
+t.insert(1)
 # print(t.get_root().value)
 # t.insert(10)
 # t.insert(3)
