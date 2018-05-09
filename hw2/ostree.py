@@ -178,7 +178,9 @@ class OS_tree:
       self.delete_one_child(n)
 
    def replace(self, n, c):
-      # need : root node case
+      if n.parent is None:
+         self.root = NIL
+         return "empty"
       if n.parent.left == n:
          n.parent.left = c
       else:
@@ -191,7 +193,8 @@ class OS_tree:
 
    def delete_one_child(self, n):
       c = n.left if n.right.is_NIL() else n.right
-      self.replace(n, c)
+      if self.replace(n, c) == "empty":
+         return
       if n.color == B:
          if c.color == R:
             c.set_color(B)
@@ -276,16 +279,17 @@ class OS_tree:
 
 
 t = OS_tree()
-t.insert(5)
-t.insert(1)
-t.insert(10)
-t.insert(3)
-t.insert(7)
+# t.insert(5)
+# t.insert(1)
+# print(t.get_root().value)
+# t.insert(10)
+# t.insert(3)
+# t.insert(7)
 # t.delete(10)
-t.delete(1)
+# t.delete(1)
 
 # print(t.get_root().value)
-t.print_tree(t.get_root())
+# t.print_tree(t.get_root())
 
          
       
