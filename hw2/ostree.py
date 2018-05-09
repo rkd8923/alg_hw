@@ -126,7 +126,6 @@ class OS_tree:
 
     def insert_case4(self, n):
         g = n.get_p2()
-
         if n == n.parent.right and n.parent == g.left:
             self.rotateL(n.parent)
             n = n.left
@@ -147,14 +146,12 @@ class OS_tree:
     def rotateL(self, n):
         c = n.right
         p = n.parent
-
         if not(c.left.is_NIL()):
             c.left.parent = n
         n.right = c.left
         n.parent = c
         c.left = n
         c.parent = parent
-
         if not(p is None):
             if (p.left == n):
                 p.left = c
@@ -164,14 +161,12 @@ class OS_tree:
     def rotateR(self, n):
         c = n.left
         p = n.parent
-
         if not(c.right.is_NIL()):
             c.right.parent = n
         n.left = c.right
         n.parent = c
         c.right = n
         c.parent = parent
-
         if not(p is None):
             if (p.right == n):
                 p.right = c
@@ -220,10 +215,9 @@ class OS_tree:
             else:
                 self.rotateR(n.parent)
         self.delete_case3(n)
-# ################################################
+
     def delete_case3(self, n):
-        s = n.get_sibling()
-    
+        s = n.get_sibling() 
         if ((n.parent.color == B) and
             (s.color == B) and
             (s.left.color == B) and
@@ -265,7 +259,6 @@ class OS_tree:
         s = n.get_sibling()
         s.set_color(n.parent.color)
         n.parent.set_color(B)
-
         if n == n.parent.left:
             s.right.set_color(B)
             self.rotateL(n.parent)
