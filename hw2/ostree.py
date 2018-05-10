@@ -172,7 +172,7 @@ class OS_tree:
         n.left = c.right
         n.parent = c
         c.right = n
-        c.parent = parent
+        c.parent = p
         if not(p is None):
             if (p.right == n):
                 p.right = c
@@ -189,8 +189,9 @@ class OS_tree:
 
     def replace(self, n, c):
         if n.parent is None:
-            self.root = NIL
-            return "empty"
+            self.root = c
+            return c
+
         if n.parent.left == n:
             n.parent.left = c
         else:
@@ -212,12 +213,12 @@ class OS_tree:
                 self.delete_case1(c)
 
     def delete_case1(self, n):
-        if not(n.parent.is_NIL()):
+        if n.parent != None:
             self.delete_case2(n)
 
     def delete_case2(self, n):
         s = n.get_sibling()
-        if s_color == R:
+        if s.color == R:
             n.parent.set_color(R)
             s.set_color(B)
             if n == n.parent.left:
@@ -278,7 +279,7 @@ class OS_tree:
 
     def print_tree(self, node, blank):
         if not(node.is_NIL()):
-            print(blank, "value :", node.value, "size :", node.size)
+            print(blank + "[", node.value, "]")
             self.print_tree(node.left, blank + " ")
             self.print_tree(node.right, blank + " ")
 
