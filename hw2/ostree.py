@@ -63,6 +63,12 @@ class OS_tree:
     def get_root(self):
         return self.root
 
+    def set_root(self, node):
+        if node.parent is None:
+            self.root = node
+        else:
+            self.set_root(node.parent)
+
     def find_node(self, node, x):  # first, node is root node
         if self.root.is_NIL():
             return False
@@ -73,8 +79,6 @@ class OS_tree:
             return self.find_node(node.left, x)
         elif node.value < x:
             return self.find_node(node.right, x)
-        else:
-            print("Error : Find node")
     
     def find_loc(self, node, x):  # find node for insert location
         node.set_size(True)
@@ -102,6 +106,7 @@ class OS_tree:
                 p.right = newNode
             newNode.parent = p
         self.insert_case1(newNode)
+
 
     def insert_case1(self, n):
         if n.parent is None:
@@ -151,12 +156,13 @@ class OS_tree:
         n.right = c.left
         n.parent = c
         c.left = n
-        c.parent = parent
+        c.parent = p
         if not(p is None):
             if (p.left == n):
                 p.left = c
             else:
                 p.right = c
+        self.set_root(n)
 
     def rotateR(self, n):
         c = n.left
@@ -172,9 +178,13 @@ class OS_tree:
                 p.right = c
             else:
                 p.left = c
+        self.set_root(n)
 
     def delete(self, x):
-        n = self.find_node(self.get_root(), x)
+        try:
+            n = self.find_node(self.get_root(), x)
+        except:
+            return 0
         self.delete_one_child(n)
 
     def replace(self, n, c):
@@ -266,28 +276,30 @@ class OS_tree:
             s.left.set_color(B)
             self.rotateR(n.parent)
 
-    def print_tree(self, node):
+    def print_tree(self, node, blank):
         if not(node.is_NIL()):
-            self.print_tree(node.left)
-            print("value :", node.value, "size :", node.size)
-            self.print_tree(node.right)
+            print(blank, "value :", node.value, "size :", node.size)
+            self.print_tree(node.left, blank + " ")
+            self.print_tree(node.right, blank + " ")
+
+
+    def print_tree2(self):
+        stack = []
 
 
 
-
-
-t = OS_tree()
-t.insert(5)
-t.insert(1)
+# t = OS_tree()
+# t.insert(5)
+# t.insert(1)
 # print(t.get_root().value)
-t.insert(10)
-t.insert(3)
-t.insert(7)
-t.delete(7)
+# t.insert(10)
+# t.insert(3)
+# t.insert(7)
+# t.delete(7)
 # t.delete(1)
 
 # print(t.get_root().value)
-t.print_tree(t.get_root())
+# t.print_tree(t.get_root())
 
             
         
