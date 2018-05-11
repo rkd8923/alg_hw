@@ -12,12 +12,6 @@ class Node:
         self.value = v
     def set_color(self, c):
         self.color = c
-    def set_parent(self, p):
-        self.parent = p
-    def set_left(self, n):
-        self.left = n
-    def set_right(self, n):
-        self.right = n
     def set_size(self, s):
         if s:
             self.size += 1
@@ -28,11 +22,6 @@ class Node:
         self.right = N
     def is_NIL(self):
         return (self.value is None)
-    def get_color(self, n):
-        if n == False:
-            return B
-        else:
-            return n.color
     def get_sibling(self):
         if self.parent.left == self:
             return self.parent.right
@@ -70,9 +59,9 @@ class OS_tree:
             self.set_root(node.parent)
 
     def find_node(self, node, x):  # first, node is root node
-        if self.root.is_NIL():
-            return False
-        node.set_size(False)
+        # if self.root.is_NIL():
+        #     return False
+        # node.set_size(False)
         if node.value == x:
             return node
         elif node.value > x:
@@ -111,7 +100,7 @@ class OS_tree:
     def insert_case1(self, n):
         if n.parent is None:
             n.set_color(B)
-        else:
+        else:  
             self.insert_case2(n)
 
     def insert_case2(self, n):
@@ -181,42 +170,36 @@ class OS_tree:
         self.set_root(n)
 
     def delete(self, x):
-        try:
-            n = self.find_node(self.get_root(), x)
-        except:
-            return 0
-        self.delete_one_child(n)
-    # need fix
-    def for_replace(self, node):
+        n = self.find_node(self.get_root(), x)
+        if (n.parent is None and n.right.is_NIL() and n.left.is_NIL()):
+            self.root = NIL
+        else:
+            d = self.for_delete(n)
+            self.delete_one_child(d)
+
+    def for_delete(self, node):
+        if (node.right.is_NIL() and node.left.is_NIL()):
+     	   return node
         if not(node.left.is_NIL()):
             r = node.left
             while not(r.right.is_NIL()):
-                r = r.right
-            return r
+                r = r.right           
         else:
-            return node.left    
+            r = node.right
+        node.value, r.value = r.value, node.value
+        return r
 
-    def replace(self, n, c):
-        # 대체할것 찾기
-        if n.left == c:
-        if n.parent is None:
-            self.root = c        
+    def replace(self, n, c):    
+        if n.parent.left == n:
+            n.parent.left = c
         else:
-            if n.parent.left == n:
-                n.parent.left = c
-            else:
-                n.parent.right = c
-            if not(c.is_NIL()):
-                c.parent = n.parent
-                return c
-            else:
-                return c
-    # need fix
+            n.parent.right = c
+        if not(c.is_NIL()):
+            c.parent = n.parent
 
     def delete_one_child(self, n):
         c = n.left if n.right.is_NIL() else n.right
-        if self.replace(n, c) == "empty":
-            return
+        self.replace(n, c)
         if n.color == B:
             if c.color == R:
                 c.set_color(B)
@@ -290,15 +273,9 @@ class OS_tree:
 
     def print_tree(self, node, blank):
         if not(node.is_NIL()):
-            print(blank + "[", node.value, "]")
+            print(blank + str(node.value))
             self.print_tree(node.left, blank + " ")
             self.print_tree(node.right, blank + " ")
-
-
-    def print_tree2(self):
-        stack = []
-
-
 
 # t = OS_tree()
 # t.insert(5)
