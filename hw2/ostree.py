@@ -186,21 +186,32 @@ class OS_tree:
         except:
             return 0
         self.delete_one_child(n)
+    # need fix
+    def for_replace(self, node):
+        if not(node.left.is_NIL()):
+            r = node.left
+            while not(r.right.is_NIL()):
+                r = r.right
+            return r
+        else:
+            return node.left    
 
     def replace(self, n, c):
+        # 대체할것 찾기
+        if n.left == c:
         if n.parent is None:
-            self.root = c
-            return c
-
-        if n.parent.left == n:
-            n.parent.left = c
+            self.root = c        
         else:
-            n.parent.right = c
-        if not(c.is_NIL()):
-            c.parent = n.parent
-            return c
-        else:
-            return c
+            if n.parent.left == n:
+                n.parent.left = c
+            else:
+                n.parent.right = c
+            if not(c.is_NIL()):
+                c.parent = n.parent
+                return c
+            else:
+                return c
+    # need fix
 
     def delete_one_child(self, n):
         c = n.left if n.right.is_NIL() else n.right
