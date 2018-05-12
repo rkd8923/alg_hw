@@ -14,7 +14,9 @@ def main(input_file):
             print(cmd)
 
         v = int(cmd[2:])
-
+        if v<1 and v>999:
+            print("Error")
+            break
         # Insert case    
         if cmd[0] == 'I':     
             result = OST.insert(v)
@@ -23,10 +25,13 @@ def main(input_file):
             result = OST.delete(v)
         # Selete case
         elif cmd[0] == 'S':
-            result = 0
+            if v > OST.get_root().size:
+                result = 0
+            else:
+                result = OST.select(v)
         # Rank case
         elif cmd[0] == 'R':
-            result = 0
+            result = OST.rank(v)
         else:
             print("Error")
 

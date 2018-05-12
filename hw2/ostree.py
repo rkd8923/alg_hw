@@ -68,13 +68,26 @@ class OS_tree:
         if node.value == x:
             return node
         elif node.value > x:
+            if node.left.is_NIL():
+                while not(node is None):
+                    node.set_size(True)
+                    node = node.parent
+                return 0               
             return self.find_node(node.left, x, f)
         elif node.value < x:
+            if node.right.is_NIL():
+                while not(node is None):
+                    node.set_size(True)
+                    node = node.parent
+                return 0  
             return self.find_node(node.right, x, f)
     
     def find_loc(self, node, x):  # find node for insert location
         node.set_size(True)
         if node.value == x:
+            while not(node is None):
+                node.set_size(False)
+                node = node.parent
             return 0, "same"
         elif node.value > x:
             if not(node.left.is_NIL()):
@@ -86,13 +99,26 @@ class OS_tree:
                 return self.find_loc(node.right, x)
             else:
                 return node, "right"
+    def select(self, node, i):
+        r = node.left.size + 1
+        if i == r:
+            return node.value
+        elif i < r:
+            return self.select(node.left, i)
+        else:
+            return self.select(node.right, i-r)
 
     def rank(self, x):
         node = self.find_node(self.get_root(), x, 'R')
         if node == 0:
             return 0
-        else:
-            return node.size
+        r = node.left.size + 1
+        y = node
+        while not(y.parent is None):
+            if y == y.parent.right:
+                r = r + y.parent.left.size + 1
+            y = y.parent
+        return r
 
     def insert(self, x):
         newNode = Node(x)
@@ -298,13 +324,36 @@ class OS_tree:
             s.left.set_color(B)
             self.rotateR(n.parent)
 
-
-
-
-
-
     def print_tree(self, node, blank):
         if not(node.is_NIL()):
-            print("|", blank + str(node.value))
+            print(blank + str(node.value) + ' (' + str(node.size) + ')')
             self.print_tree(node.left, blank + " ")
             self.print_tree(node.right, blank + " ")
+
+
+# OST = OS_tree()
+# while 1:
+#     cmd = input("input the cmd : ")
+#     v = int(cmd[2:])
+#     if v<1 and v>999:
+#         print("Error")
+#         break
+#     # Insert case    
+#     if cmd[0] == 'I':     
+#         result = OST.insert(v)
+#     # Delete case
+#     elif cmd[0] == 'D':
+#         result = OST.delete(v)
+#     # Selete case
+#     elif cmd[0] == 'S':
+#         if v > OST.get_root().size:
+#             result = 0
+#         else:
+#             result = OST.select(OST.get_root(), v)
+#     # Rank case
+#     elif cmd[0] == 'R':
+#         result = OST.rank(v)
+#     else:
+#         print("Error")
+#     print("Result :", result)
+#     OST.print_tree(OST.get_root(), "") 
