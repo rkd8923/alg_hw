@@ -154,6 +154,9 @@ class OS_tree:
     def rotateL(self, n):
         c = n.right
         p = n.parent
+        n_size = n.size
+        cl_size = c.left.size
+        nl_size = n.left.size
         if not(c.left.is_NIL()):
             c.left.parent = n
         n.right = c.left
@@ -165,11 +168,16 @@ class OS_tree:
                 p.left = c
             else:
                 p.right = c
+        c.size = n_size
+        n.size = nl_size + cl_size + 1
         self.set_root(n)
 
     def rotateR(self, n):
         c = n.left
         p = n.parent
+        n_size = n.size
+        cr_size = c.right.size
+        nr_size = n.right.size
         if not(c.right.is_NIL()):
             c.right.parent = n
         n.left = c.right
@@ -181,6 +189,8 @@ class OS_tree:
                 p.right = c
             else:
                 p.left = c
+        c.size = n_size
+        n.size = cr_size + nr_size + 1
         self.set_root(n)
 
     def delete(self, x):
