@@ -1,3 +1,5 @@
+import sys
+
 B = 'Black'
 R = 'Red'
 class Node:
@@ -58,20 +60,23 @@ class OS_tree:
         else:
             self.set_root(node.parent)
 
-    def find_node(self, node, x):  # first, node is root node
-        # if self.root.is_NIL():
-        #     return False
-        # node.set_size(False)
+    def find_node(self, node, x, f):  # first, node is root node
+        if node.is_NIL():
+            return 0
+        if f == 'D':
+            node.set_size(False)
         if node.value == x:
             return node
         elif node.value > x:
-            return self.find_node(node.left, x)
+            return self.find_node(node.left, x, f)
         elif node.value < x:
-            return self.find_node(node.right, x)
+            return self.find_node(node.right, x, f)
     
     def find_loc(self, node, x):  # find node for insert location
         node.set_size(True)
-        if node.value > x:
+        if node.value == x:
+            return 0, "same"
+        elif node.value > x:
             if not(node.left.is_NIL()):
                 return self.find_loc(node.left, x)
             else:
@@ -82,6 +87,13 @@ class OS_tree:
             else:
                 return node, "right"
 
+    def rank(self, x):
+        node = self.find_node(self.get_root(), x, 'R')
+        if node == 0:
+            return 0
+        else:
+            return node.size
+
     def insert(self, x):
         newNode = Node(x)
         newNode.set_leaf(NIL)
@@ -89,13 +101,15 @@ class OS_tree:
             self.root = newNode
         else:
             p, d = self.find_loc(self.get_root(), newNode.value)
-            if d == "left":
+            if d == "same":
+                return p
+            elif d == "left":
                 p.left = newNode
             else:
                 p.right = newNode
             newNode.parent = p
         self.insert_case1(newNode)
-
+        return x
 
     def insert_case1(self, n):
         if n.parent is None:
@@ -170,12 +184,15 @@ class OS_tree:
         self.set_root(n)
 
     def delete(self, x):
-        n = self.find_node(self.get_root(), x)
+        n = self.find_node(self.get_root(), x, 'D')
+        if n == 0:
+            return 0
         if (n.parent is None and n.right.is_NIL() and n.left.is_NIL()):
             self.root = NIL
         else:
             d = self.for_delete(n)
             self.delete_one_child(d)
+        return x
 
     def for_delete(self, node):
         if (node.right.is_NIL() and node.left.is_NIL()):
@@ -271,24 +288,13 @@ class OS_tree:
             s.left.set_color(B)
             self.rotateR(n.parent)
 
+
+
+
+
+
     def print_tree(self, node, blank):
         if not(node.is_NIL()):
-            print(blank + str(node.value))
+            print("|", blank + str(node.value))
             self.print_tree(node.left, blank + " ")
             self.print_tree(node.right, blank + " ")
-
-# t = OS_tree()
-# t.insert(5)
-# t.insert(1)
-# print(t.get_root().value)
-# t.insert(10)
-# t.insert(3)
-# t.insert(7)
-# t.delete(7)
-# t.delete(1)
-
-# print(t.get_root().value)
-# t.print_tree(t.get_root())
-
-            
-        
