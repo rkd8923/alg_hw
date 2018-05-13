@@ -4,8 +4,8 @@ import ostree as OS
 OST = OS.OS_tree()
 
 def main(input_file):
-    input_list = []
     f = open(input_file, 'r')
+    o = open("output.txt", 'w')
     for cmd in f:
         # print input cmd
         if "\n" in cmd:
@@ -34,16 +34,14 @@ def main(input_file):
             result = OST.rank(v)
         else:
             print("Error")
-
+        o.write(str(result) + '\n')
         print(result)
-        OST.print_tree(OST.get_root(), "")
+        # OST.print_tree(OST.get_root(), "")
     f.close()
+    o.close()
 
-try:
-    main(sys.argv[1])
-except:
-    input_file = input("Please enter an input file. ")
-    main(input_file)
+
+main(sys.argv[1])
 
 
 
