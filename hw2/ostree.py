@@ -100,7 +100,6 @@ class OS_tree:
                 return node, "right"
                 
     def select(self, node, i):
-        print("test", node.value)
         r = node.left.size + 1
         if i == r:
             return node.value
