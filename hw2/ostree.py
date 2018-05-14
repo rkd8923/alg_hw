@@ -1,5 +1,4 @@
 import sys
-
 B = 'Black'
 R = 'Red'
 class Node:
@@ -99,6 +98,7 @@ class OS_tree:
                 return self.find_loc(node.right, x)
             else:
                 return node, "right"
+                
     def select(self, node, i):
         r = node.left.size + 1
         if i == r:
@@ -324,36 +324,50 @@ class OS_tree:
             s.left.set_color(B)
             self.rotateR(n.parent)
 
-    def print_tree(self, node, blank):
-        if not(node.is_NIL()):
-            print(blank + str(node.value) + ' (' + str(node.size) + ')')
-            self.print_tree(node.left, blank + " ")
-            self.print_tree(node.right, blank + " ")
+    # def print_tree(self, node, blank, cnt):
+    #     if not(node.is_NIL()):
+    #         if node.color == B:
+    #             cnt += 1
+    #         print(blank + str(node.value) + ' (' + str(node.size) + ')', node.color)
+    #         self.print_tree(node.left, blank + " ", cnt)
+    #         self.print_tree(node.right, blank + " ", cnt)
 
+OST = OS_tree()
+def main(input_file):
+    f = open(input_file, 'r')
+    o = open("output.txt", 'w')
+    for cmd in f:
+        # print input cmd
+        if "\n" in cmd:
+            print(cmd, end="")
+        else:
+            print(cmd)
 
-# OST = OS_tree()
-# while 1:
-#     cmd = input("input the cmd : ")
-#     v = int(cmd[2:])
-#     if v<1 and v>999:
-#         print("Error")
-#         break
-#     # Insert case    
-#     if cmd[0] == 'I':     
-#         result = OST.insert(v)
-#     # Delete case
-#     elif cmd[0] == 'D':
-#         result = OST.delete(v)
-#     # Selete case
-#     elif cmd[0] == 'S':
-#         if v > OST.get_root().size:
-#             result = 0
-#         else:
-#             result = OST.select(OST.get_root(), v)
-#     # Rank case
-#     elif cmd[0] == 'R':
-#         result = OST.rank(v)
-#     else:
-#         print("Error")
-#     print("Result :", result)
-#     OST.print_tree(OST.get_root(), "") 
+        v = int(cmd[2:])
+        if v<1 and v>999:
+            print("Error")
+            break
+        # Insert case    
+        if cmd[0] == 'I':     
+            result = OST.insert(v)
+        # Delete case
+        elif cmd[0] == 'D':
+            result = OST.delete(v)
+        # Selete case
+        elif cmd[0] == 'S':
+            if v > OST.get_root().size:
+                result = 0
+            else:
+                result = OST.select(OST.get_root(), v)
+        # Rank case
+        elif cmd[0] == 'R':
+            result = OST.rank(v)
+        else:
+            print("Error")
+        o.write(str(result) + '\n')
+        print(result)
+        # OST.print_tree(OST.get_root(), "", 0)
+    f.close()
+    o.close()
+
+main(sys.argv[1])
