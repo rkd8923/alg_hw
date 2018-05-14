@@ -67,14 +67,14 @@ class OS_tree:
         if node.value == x:
             return node
         elif node.value > x:
-            if node.left.is_NIL():
+            if node.left.is_NIL() and f == 'D':
                 while not(node is None):
                     node.set_size(True)
                     node = node.parent
                 return 0               
             return self.find_node(node.left, x, f)
         elif node.value < x:
-            if node.right.is_NIL():
+            if node.right.is_NIL() and f == 'D':
                 while not(node is None):
                     node.set_size(True)
                     node = node.parent
@@ -100,6 +100,7 @@ class OS_tree:
                 return node, "right"
                 
     def select(self, node, i):
+        print("test", node.value)
         r = node.left.size + 1
         if i == r:
             return node.value
@@ -144,7 +145,9 @@ class OS_tree:
             self.insert_case2(n)
 
     def insert_case2(self, n):
-        if n.parent.color != B:
+        if n.parent.color == B:
+            return
+        else:
             self.insert_case3(n)
 
     def insert_case3(self, n):
@@ -157,25 +160,6 @@ class OS_tree:
             self.insert_case1(g)
         else:
             self.insert_case4(n)
-
-    def insert_case4(self, n):
-        g = n.get_p2()
-        if n == n.parent.right and n.parent == g.left:
-            self.rotateL(n.parent)
-            n = n.left
-        elif n == n.parent.left and n.parent == g.right:
-            self.rotateR(n.parent)
-            n = n.right
-        self.insert_case5(n)
-
-    def insert_case5(self, n):
-        g = n.get_p2()
-        n.parent.set_color(B)
-        g.set_color(R)
-        if n == n.parent.left:
-            self.rotateR(g)
-        else:
-            self.rotateL(g)
 
     def rotateL(self, n):
         c = n.right
@@ -219,6 +203,27 @@ class OS_tree:
         n.size = cr_size + nr_size + 1
         self.set_root(n)
 
+    def insert_case4(self, n):
+        g = n.get_p2()
+        if n == n.parent.right and n.parent == g.left:
+            self.rotateL(n.parent)
+            n = n.left
+        elif n == n.parent.left and n.parent == g.right:
+            self.rotateR(n.parent)
+            n = n.right
+        self.insert_case5(n)
+
+    def insert_case5(self, n):
+        g = n.get_p2()
+        n.parent.set_color(B)
+        g.set_color(R)
+        if n == n.parent.left:
+            self.rotateR(g)
+        else:
+            self.rotateL(g)
+
+
+
     def delete(self, x):
         n = self.find_node(self.get_root(), x, 'D')
         if n == 0:
@@ -235,22 +240,36 @@ class OS_tree:
      	   return node
         if not(node.left.is_NIL()):
             r = node.left
+            r.set_size(False)
             while not(r.right.is_NIL()):
                 r = r.right           
         else:
             r = node.right
+            r.set_size(False)
+            while not(r.left.is_NIL()):
+                r = r.left
         node.value, r.value = r.value, node.value
+        # node.color, r.color = r.color, node.color
         return r
 
     def replace(self, n, c):    
+        # print("n", n.parent)
+        # print("c", c.parent)
         if n.parent.left == n:
             n.parent.left = c
         else:
             n.parent.right = c
-        if not(c.is_NIL()):
-            c.parent = n.parent
+        # if not(c.is_NIL()):
+        c.parent = n.parent
+
 
     def delete_one_child(self, n):
+        # if n.right.is_NIL():
+        #     c = n.left
+        #     f = 'left'
+        # else:
+        #     c = n.right
+        #     f = 'right'
         c = n.left if n.right.is_NIL() else n.right
         self.replace(n, c)
         if n.color == B:
@@ -260,7 +279,7 @@ class OS_tree:
                 self.delete_case1(c)
 
     def delete_case1(self, n):
-        if n.parent != None:
+        if not(n.parent is None):
             self.delete_case2(n)
 
     def delete_case2(self, n):
@@ -287,6 +306,8 @@ class OS_tree:
 
     def delete_case4(self, n):
         s = n.get_sibling()
+        # print("n", n.value, n.color)
+
         if ((n.parent.color == R) and
             (s.color == B) and
             (s.left.color == B) and
@@ -294,7 +315,7 @@ class OS_tree:
             s.set_color(R)
             n.parent.set_color(B)
         else:
-            delete_case5(n)
+            self.delete_case5(n)
 
     def delete_case5(self, n):
         s = n.get_sibling()
@@ -305,7 +326,7 @@ class OS_tree:
                 s.set_color(R)
                 s.left.set_color(B)
                 self.rotateR(s)
-            elif ((n==n.parent.right) and
+            elif ((n == n.parent.right) and
                     (s.left.color == B) and
                     (s.right.color == R)):
                 s.set_color(R)
@@ -324,28 +345,29 @@ class OS_tree:
             s.left.set_color(B)
             self.rotateR(n.parent)
 
-    # def print_tree(self, node, blank, cnt):
-    #     if not(node.is_NIL()):
-    #         if node.color == B:
-    #             cnt += 1
-    #         print(blank + str(node.value) + ' (' + str(node.size) + ')', node.color)
-    #         self.print_tree(node.left, blank + " ", cnt)
-    #         self.print_tree(node.right, blank + " ", cnt)
+    def print_tree(self, node, blank, cnt):
+        if not(node.is_NIL()):
+            if node.color == B:
+                cnt += 1
+            print(blank + str(node.value) + ' (' + str(node.size) + ')', node.color)
+            self.print_tree(node.left, blank + " ", cnt)
+            self.print_tree(node.right, blank + " ", cnt)
+        # else:
+        #     print("         bh : ", cnt)
 
 OST = OS_tree()
 def main(input_file):
     f = open(input_file, 'r')
     o = open("output.txt", 'w')
-    for cmd in f:
-        # print input cmd
+    for cmd in f:        # print input cmd
         if "\n" in cmd:
             print(cmd, end="")
         else:
             print(cmd)
 
         v = int(cmd[2:])
-        if v<1 and v>999:
-            print("Error")
+        if v<1 or v>999:
+            print("Input Error")
             break
         # Insert case    
         if cmd[0] == 'I':     

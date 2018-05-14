@@ -28,19 +28,21 @@ def checker(input_file):
                 result = 0
             else:
                 cnt = 0
+                a = 0
                 for x in range(1, len(check_array)):
                     if check_array[x] == 1:
                         cnt += 1
                     if cnt == v:
+                        a = x
                         break
-                result = cnt
+                result = a
         # Rank case
         elif cmd[0] == 'R':
             if check_array[v] != 1:
                 result = 0
             else:
                 cnt = 0
-                for x in range(1, len(check_array[:v+1])):
+                for x in range(1, v+1):
                     if check_array[x] == 1:
                         cnt += 1
                 result = cnt
@@ -61,7 +63,7 @@ def checker(input_file):
         i += 1
     print("Output :", o_list)
     print("Checker:", result_list)
-    print(check_list)
+    # print(check_list)
     print("Result :", check)
 
 checker(sys.argv[1])
