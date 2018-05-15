@@ -67,14 +67,14 @@ class OS_tree:
         if node.value == x:
             return node
         elif node.value > x:
-            if node.left.is_NIL() and f == 'D':
+            if node.left.is_NIL() and f == 'D': # if delete failed
                 while not(node is None):
                     node.set_size(True)
                     node = node.parent
                 return 0               
             return self.find_node(node.left, x, f)
         elif node.value < x:
-            if node.right.is_NIL() and f == 'D':
+            if node.right.is_NIL() and f == 'D': # if delete failed
                 while not(node is None):
                     node.set_size(True)
                     node = node.parent
@@ -224,7 +224,7 @@ class OS_tree:
 
 
     def delete(self, x):
-        n = self.find_node(self.get_root(), x, 'D')
+        n = self.find_node(self.get_root(), x, 'D') # n : delete node
         if n == 0:
             return 0
         if (n.parent is None and n.right.is_NIL() and n.left.is_NIL()):
@@ -344,13 +344,13 @@ class OS_tree:
             s.left.set_color(B)
             self.rotateR(n.parent)
 
-    def print_tree(self, node, blank, cnt):
-        if not(node.is_NIL()):
-            if node.color == B:
-                cnt += 1
-            print(blank + str(node.value) + ' (' + str(node.size) + ')', node.color)
-            self.print_tree(node.left, blank + " ", cnt)
-            self.print_tree(node.right, blank + " ", cnt)
+    # def print_tree(self, node, blank, cnt):
+    #     if not(node.is_NIL()):
+    #         if node.color == B:
+    #             cnt += 1
+    #         print(blank + str(node.value) + ' (' + str(node.size) + ')', node.color)
+    #         self.print_tree(node.left, blank + " ", cnt)
+    #         self.print_tree(node.right, blank + " ", cnt)
         # else:
         #     print("         bh : ", cnt)
 
