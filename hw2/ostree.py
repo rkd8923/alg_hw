@@ -358,6 +358,7 @@ OST = OS_tree()
 def main(input_file):
     f = open(input_file, 'r')
     o = open("output.txt", 'w')
+    result_list = []
     for cmd in f:        # print input cmd
         if "\n" in cmd:
             print(cmd, end="")
@@ -386,9 +387,12 @@ def main(input_file):
         else:
             print("Error")
         o.write(str(result) + '\n')
-        print(result)
+        result_list.append(result)
+        # print(result)
         # OST.print_tree(OST.get_root(), "", 0)
     f.close()
     o.close()
+    for x in result_list:
+        print(x)
 
 main(sys.argv[1])
