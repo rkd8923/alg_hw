@@ -7,6 +7,7 @@ public class SCC {
 	static int N = 0;
 	static AdjacencyMatrix MATRIX;
     static AdjacencyList LIST;
+    static long[] times = new long[3];
 	public static void main(String args[]) {
 		// Input setting
         try {
@@ -31,9 +32,25 @@ public class SCC {
     		System.exit(1);
     	}
 
-        // Strongly Connected Component
-        ArrayList<Integer>[] scc_matrix = MATRIX.scc();
-		print_scc(scc_matrix);
+        // Adjacency Matrix
+    	long start = System.currentTimeMillis();
+        ArrayList<Integer>[] scc_matrix = MATRIX.scc();    	
+    	long end = System.currentTimeMillis();
+    	times[0] = end - start;
+    	
+    	// Adjacency List
+    	start = System.currentTimeMillis();
+        ArrayList<Integer>[] scc_list = LIST.scc();    	
+    	end = System.currentTimeMillis();
+    	times[1] = end - start;
+    	
+    	// Adjacency Array
+//    	start = System.currentTimeMillis();
+//        ArrayList<Integer>[] scc_Array = MATRIX.scc();    	
+//    	end = System.currentTimeMillis();
+//		print_scc(scc_list);
+//		System.out.println("Matrix time : " + times[0]);
+//		System.out.println("List time : " + times[1]);
 	}
     public static void setInput(int i, String s) { 
     	String[] str_nums = s.split("\\s");
@@ -41,6 +58,7 @@ public class SCC {
     	MATRIX.setInput(i, nums);
     	LIST.setInput(i, nums);
     }
+
     public static void print() {
     	for (int x = 1; x <4; x++) {
     		for (int y=1; y<4; y++)
