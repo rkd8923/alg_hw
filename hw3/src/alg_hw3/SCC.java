@@ -9,6 +9,7 @@ public class SCC {
     static AdjacencyList LIST;
     static AdjacencyArray ARRAY;
     static long[] times = new long[3];
+    
 	public static void main(String args[]) {
 		// Input setting
         try {
@@ -50,32 +51,37 @@ public class SCC {
    	    start = System.currentTimeMillis();
         ArrayList<Integer>[] scc_array = ARRAY.scc();    	
        	end = System.currentTimeMillis();
-        times[1] = end - start;
-	    print_scc(scc_array);
-//		System.out.println("Matrix time : " + times[0]);
-//		System.out.println("List time : " + times[1]);
+        times[2] = end - start;
+	    
+	    print_scc(scc_matrix);
+		System.out.println("Adjacency Matrix time : " + times[0]);
+		print_scc(scc_list);
+		System.out.println("Adjacency List time : " + times[1]);
+		print_scc(scc_array);
+		System.out.println("Adjacency Array time : " + times[2]);
 	}
     public static void setInput(int i, String s) { 
     	String[] str_nums = s.split("\\s");
     	int[] nums = Arrays.stream(str_nums).mapToInt(Integer::parseInt).toArray();
     	MATRIX.setInput(i, nums);
     	LIST.setInput(i, nums);
+    	ARRAY.setInput(i, nums);
     }
 
-    public static void print() {
-    	for (int x = 1; x <4; x++) {
-    		for (int y=1; y<4; y++)
-    			System.out.print(MATRIX.getElement(x, y) + " ");
-    		System.out.print("\n");
-    	}
-    }
-    public static void transprint() {
-       	for (int x = 1; x <4; x++) {
-       		for (int y=1; y<4; y++)
-       			System.out.print(MATRIX.getTrans(x, y) + " ");
-       		System.out.print("\n");
-       	}
-    }
+//    public static void print() {
+//    	for (int x = 1; x <4; x++) {
+//    		for (int y=1; y<4; y++)
+//    			System.out.print(MATRIX.getElement(x, y) + " ");
+//    		System.out.print("\n");
+//    	}
+//    }
+//    public static void transprint() {
+//       	for (int x = 1; x <4; x++) {
+//       		for (int y=1; y<4; y++)
+//       			System.out.print(MATRIX.getTrans(x, y) + " ");
+//       		System.out.print("\n");
+//       	}
+//    }
     public static void print_scc(ArrayList<Integer>[] m) { 
     	for (int i=1; i<m.length; i++) {
     		if (m[i] == null) continue;

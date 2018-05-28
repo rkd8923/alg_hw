@@ -20,8 +20,11 @@ public class AdjacencyArray {
 	public void setInput(int n, int[] input) {
 		for (int i=0; i<input.length; i++) {
 			this.array[n][i] = input[i];
-			this.trans[input[i]][this.trans[input[i]][0]+1] = n;
-			this.trans[input[i]][0]++;
+			if (i!=0) {
+				int y = this.trans[input[i]][0] + 1;
+				this.trans[input[i]][y] = n;
+				this.trans[input[i]][0]++;
+			}
 		}
 	}
 
