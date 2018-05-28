@@ -44,11 +44,8 @@ public class AdjacencyList {
 	}
 	
 	public int check_visit_end(int[] v) {
-		for (int i=1; i<=this.N; i++) {
-			if (v[i] == 0) { 
-				return i;
-			}
-		}
+		for (int i=1; i<=this.N; i++) 
+			if (v[i] == 0) return i;
 		return 0;
 	}
 	

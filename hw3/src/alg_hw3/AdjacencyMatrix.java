@@ -35,11 +35,8 @@ public class AdjacencyMatrix {
 		return this.trans[x][y];
 	}
 	public int check_visit_end(int[] v) {
-		for (int i=1; i<=this.N; i++) {
-			if (v[i] == 0) { 
-				return i;
-			}
-		}
+		for (int i=1; i<=this.N; i++) 
+			if (v[i] == 0) return i;
 		return 0;
 	}
 	public Stack<Integer> dfs() {
@@ -113,7 +110,6 @@ public class AdjacencyMatrix {
 				}
 			}
 		}
-		
 		return this.scc_tree;	
 	}		
 }
