@@ -7,6 +7,7 @@ public class SCC {
 	static int N = 0;
 	static AdjacencyMatrix MATRIX;
     static AdjacencyList LIST;
+    static AdjacencyArray ARRAY;
     static long[] times = new long[3];
 	public static void main(String args[]) {
 		// Input setting
@@ -21,6 +22,7 @@ public class SCC {
                     N = Integer.parseInt(s);
                     MATRIX = new AdjacencyMatrix(N);
                     LIST = new AdjacencyList(N);
+                    ARRAY = new AdjacencyArray(N);
                 }
                 else setInput(i, s);
                 i++;
@@ -45,10 +47,11 @@ public class SCC {
     	times[1] = end - start;
     	
     	// Adjacency Array
-//    	start = System.currentTimeMillis();
-//        ArrayList<Integer>[] scc_Array = MATRIX.scc();    	
-//    	end = System.currentTimeMillis();
-//		print_scc(scc_list);
+   	    start = System.currentTimeMillis();
+        ArrayList<Integer>[] scc_array = ARRAY.scc();    	
+       	end = System.currentTimeMillis();
+        times[1] = end - start;
+	    print_scc(scc_array);
 //		System.out.println("Matrix time : " + times[0]);
 //		System.out.println("List time : " + times[1]);
 	}
