@@ -18,6 +18,7 @@ public class SCC {
 			String s;
 
 			while ((s = input.readLine()) != null) {
+				if (s.equals("")) continue;
 				s = s.trim();
                 if (i == 0) {
                     N = Integer.parseInt(s);
@@ -68,20 +69,6 @@ public class SCC {
     	ARRAY.setInput(i, nums);
     }
 
-//    public static void print() {
-//    	for (int x = 1; x <4; x++) {
-//    		for (int y=1; y<4; y++)
-//    			System.out.print(MATRIX.getElement(x, y) + " ");
-//    		System.out.print("\n");
-//    	}
-//    }
-//    public static void transprint() {
-//       	for (int x = 1; x <4; x++) {
-//       		for (int y=1; y<4; y++)
-//       			System.out.print(MATRIX.getTrans(x, y) + " ");
-//       		System.out.print("\n");
-//       	}
-//    }
     public static void print_scc(ArrayList<Integer>[] m) { 
     	for (int i=1; i<m.length; i++) {
     		if (m[i] == null) continue;
