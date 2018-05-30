@@ -14,22 +14,18 @@ public class SCC {
 		// Input setting
         
 		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(input.readLine());
-        int i = 0;
+		N = Integer.parseInt(input.readLine());
+        MATRIX = new AdjacencyMatrix(N);
+        LIST = new AdjacencyList(N);
+        ARRAY = new AdjacencyArray(N);
+		int i = 0;
 		String s;
 
-		while (i != N) {
-            s = input.readLine();
+		for (i=1;i<=N;i++) {
+			s = input.readLine();
 			if (s.equals("")) continue;
 			s = s.trim();
-               if (i == 0) {
-                N = Integer.parseInt(s);
-                MATRIX = new AdjacencyMatrix(N);
-                LIST = new AdjacencyList(N);
-                ARRAY = new AdjacencyArray(N);
-            }
-            else setInput(i, s);
-            i++;
+            setInput(i, s);
 		}
 	
         // Adjacency Matrix
