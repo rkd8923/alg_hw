@@ -10,32 +10,28 @@ public class SCC {
     static AdjacencyArray ARRAY;
     static long[] times = new long[3];
     
-	public static void main(String args[]) {
+	public static void main(String args[]) throws IOException{
 		// Input setting
-        try {
-			BufferedReader input = new BufferedReader(new FileReader(args[0]));
-			int i = 0;
-			String s;
+        
+		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(input.readLine());
+        int i = 0;
+		String s;
 
-			while ((s = input.readLine()) != null) {
-				if (s.equals("")) continue;
-				s = s.trim();
-                if (i == 0) {
-                    N = Integer.parseInt(s);
-                    MATRIX = new AdjacencyMatrix(N);
-                    LIST = new AdjacencyList(N);
-                    ARRAY = new AdjacencyArray(N);
-                }
-                else setInput(i, s);
-                i++;
-			}
-			input.close();
+		while (i != N) {
+            s = input.readLine();
+			if (s.equals("")) continue;
+			s = s.trim();
+               if (i == 0) {
+                N = Integer.parseInt(s);
+                MATRIX = new AdjacencyMatrix(N);
+                LIST = new AdjacencyList(N);
+                ARRAY = new AdjacencyArray(N);
+            }
+            else setInput(i, s);
+            i++;
 		}
-    	catch (IOException e) {
-    		System.err.println(e); 
-    		System.exit(1);
-    	}
-
+	
         // Adjacency Matrix
     	long start = System.currentTimeMillis();
         ArrayList<Integer>[] scc_matrix = MATRIX.scc();    	
