@@ -1,9 +1,9 @@
 import sys
 import random
 
-n = 3000
+n = 9999
 
-f = open("sparse3000.txt", 'w')
+f = open("sparse9999.txt", 'w')
 f.write(str(n) + '\n')
 
 for x in range(1, n+1):
