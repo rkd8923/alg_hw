@@ -16,6 +16,7 @@ for x in range(1, n+1):
         # if (t == x) or (t in tmp[1:]):
             # continue
         # tmp.append(t)
+    tmp[1:].sort()
     for y in tmp:
         f.write(str(y) + ' ')
     f.write('\n')
