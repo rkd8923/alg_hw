@@ -1,9 +1,9 @@
 import sys
 import random
 
-n = 3000
+n = 1000
 
-f = open("dense3000.txt", 'w')
+f = open("dense1000.txt", 'w')
 f.write(str(n) + '\n')
 
 for x in range(1, n+1):
